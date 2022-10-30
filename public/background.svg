@@ -1,0 +1,20 @@
+<svg width="213" height="235" viewBox="0 0 213 235" fill="none" xmlns="http://www.w3.org/2000/svg">
+<mask id="mask0_302_1442" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="322" height="295">
+<rect x="87" y="157.5" width="189" height="179" rx="50" transform="rotate(-30 87 157.5)" fill="white"/>
+<rect x="19" y="140.338" width="47.8435" height="45.3121" rx="10" transform="rotate(-5.20223 19 140.338)" fill="white"/>
+<rect x="109.066" y="11" width="67.5081" height="63.9362" rx="10" transform="rotate(22.1117 109.066 11)" fill="white"/>
+<path d="M91.0953 110.006C91.2765 107.703 93.8821 106.461 95.7853 107.769L116.483 121.994C118.386 123.302 118.16 126.18 116.075 127.174L93.407 137.986C91.3226 138.98 88.9436 137.345 89.1248 135.043L91.0953 110.006Z" fill="white"/>
+<path d="M96.0422 203.837C98.1252 202.84 100.507 204.471 100.329 206.774L99.1013 222.668C98.9235 224.971 96.3198 226.217 94.4147 224.912L81.2636 215.902C79.3584 214.597 79.5807 211.718 81.6636 210.721L96.0422 203.837Z" fill="white"/>
+<circle cx="212.5" cy="35.5" r="35.5" fill="white"/>
+<circle cx="27.5" cy="231.5" r="27.5" fill="white"/>
+</mask>
+<g mask="url(#mask0_302_1442)">
+<rect x="-99" y="-44" width="381" height="372" fill="url(#paint0_linear_302_1442)"/>
+</g>
+<defs>
+<linearGradient id="paint0_linear_302_1442" x1="24.5" y1="66.5" x2="310.907" y2="364.81" gradientUnits="userSpaceOnUse">
+<stop stop-color="#0080CB"/>
+<stop offset="1" stop-color="#0400CB"/>
+</linearGradient>
+</defs>
+</svg>

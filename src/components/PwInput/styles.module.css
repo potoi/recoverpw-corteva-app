@@ -1,0 +1,32 @@
+.container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.container label {
+  position: absolute;
+  top: -0.2rem;
+  left: 8px;
+  font-size: 0.8rem;
+  background: white;
+  line-height: 0.3rem;
+  padding: 0 0.2rem;
+}
+
+.container input {
+  height: 2.4rem;
+  border: none;
+  outline: 1px solid #72747a;
+  border-radius: 5px;
+  padding: 0 1rem;
+  width: 100%;
+}
+
+.container input:focus {
+  outline: 2px solid #0080cb;
+}
+
+.container input:focus + label{
+  color: #0080cb;
+}

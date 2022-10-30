@@ -1,0 +1,17 @@
+.sendButton{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 2.4rem;
+  background: #0080cb;
+  border: none;
+  border-radius: 5px;
+  color: white;
+  font-weight: 600;
+}
+
+.sendButton:hover{
+  filter: opacity(0.8);
+}
+
