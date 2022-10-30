@@ -1,26 +1,6 @@
-import { sendEmail } from "./_lib/nodemailer";
 import { Client } from "pg";
-import { createTokens } from "./_lib/JWT";
 import nodemailer from "nodemailer";
 
-let info;
-
-let isSend = false;
-
-function ping() {
-  let interval = setInterval(() => {
-    process.stdout.write(".");
-    if (info instanceof Promise) {
-      info.then(() => {
-        clearInterval(interval);
-        if (!isSend) {
-          isSend = true;
-          console.log("msg enviada!");
-        }
-      });
-    }
-  }, 500);
-}
 
 export default async function handler(req, res) {
   console.log(req.query.email);
@@ -54,14 +34,13 @@ export default async function handler(req, res) {
     },
   });
 
-  info = transporter.sendMail({
+  let info = transporter.sendMail({
     from: `"Certamente não é aEHELP" <${process.env.SMTP_USER}>`,
     to: email,
     subject: "algo",
     html: "<b>texto aleatorio aha</b>",
   });
 
-  ping();
 
   return res.status(200).send();
 }
