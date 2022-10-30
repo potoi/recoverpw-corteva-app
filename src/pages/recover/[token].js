@@ -5,23 +5,36 @@ import ButtonForm from "../../components/ButtonForm";
 import bg from "../../../public/background.svg";
 import Head from "next/head";
 import { useState } from "react";
+import axios from "../../services/api";
 
 export default function index({ jwt }) {
+  const [isSuccess, setIsSuccess] = useState(false);
   const [firstpw, setFirstpw] = useState("");
   const [secondpw, setSecondpw] = useState("");
 
-  console.log(jwt);
-
   function handleSubmit(evt) {
-    evt.preventDefault();
-    if (firstpw.length < 6) {
-      alert("Senha muito curta!");
-      return;
-    }
+    try {
+      evt.preventDefault();
+      if (firstpw.length < 6) {
+        alert("Senha muito curta!");
+        return;
+      }
 
-    if (firstpw !== secondpw) {
-      alert("Senhas não coincidem!");
-      return;
+      if (firstpw !== secondpw) {
+        alert("Senhas não coincidem!");
+        return;
+      }
+
+      axios.post(`change_pw`, { token: jwt?.token, pw: firstpw }).then(({ status }) => {
+        if (status !== 200) {
+          alert("Erro ao mudar senha, tente novamente mais tarde.");
+          return;
+        }
+
+        setIsSuccess(true);
+      });
+    } catch (err) {
+      alert("ERROR: " + JSON.stringify(err));
     }
   }
 
@@ -31,7 +44,8 @@ export default function index({ jwt }) {
         <link rel="shortcut icon" href={bg.src} type="img/png" />
       </Head>
       <img src="https://soudealgodao.com.br/wp-content/uploads/2020/08/logo-apoiador-corteva.png" />
-      {jwt ? (
+      {isSuccess && <h1 style={{ color: "green" }}>Senha trocada com sucesso!</h1>}
+      {jwt?.token && !isSuccess && (
         <>
           <h1>Redefinição de Senha</h1>
           <form onSubmit={handleSubmit}>
@@ -40,9 +54,8 @@ export default function index({ jwt }) {
             <ButtonForm text={"REDEFINIR SENHA"} />
           </form>
         </>
-      ) : (
-        <h1>Link Inválido!</h1>
       )}
+      {!jwt?.token && !isSuccess && <h1>Link Inválido!</h1>}
       <p>Corteva 2022.</p>
       <img src={bg.src} className={styles.bg} />
     </div>
@@ -53,9 +66,18 @@ export const getServerSideProps = async ({ req, params }) => {
   try {
     const { token } = params;
 
-    const jwt = validateToken(token);
+    const jwtObject = validateToken(token);
 
-    return { props: { jwt } };
+    if (!jwtObject) return { props: {} };
+
+    return {
+      props: {
+        jwt: {
+          token,
+          jwtObject,
+        },
+      },
+    };
   } catch (error) {
     console.error({ error });
   }
