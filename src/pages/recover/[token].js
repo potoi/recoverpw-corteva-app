@@ -7,7 +7,7 @@ import Head from "next/head";
 import { useState } from "react";
 import axios from "../../services/api";
 
-export default function index({ jwt }) {
+export default function Recover({ jwt }) {
   const [isSuccess, setIsSuccess] = useState(false);
   const [firstpw, setFirstpw] = useState("");
   const [secondpw, setSecondpw] = useState("");
@@ -43,7 +43,10 @@ export default function index({ jwt }) {
       <Head>
         <link rel="shortcut icon" href={bg.src} type="img/png" />
       </Head>
-      <img src="https://soudealgodao.com.br/wp-content/uploads/2020/08/logo-apoiador-corteva.png" />
+      <img
+        src="https://soudealgodao.com.br/wp-content/uploads/2020/08/logo-apoiador-corteva.png"
+        alt="corteva logo"
+      />
       {isSuccess && <h1 style={{ color: "green" }}>Senha trocada com sucesso!</h1>}
       {jwt?.token && !isSuccess && (
         <>
@@ -57,7 +60,7 @@ export default function index({ jwt }) {
       )}
       {!jwt?.token && !isSuccess && <h1>Link Inválido!</h1>}
       <p>Corteva 2022.</p>
-      <img src={bg.src} className={styles.bg} />
+      <img src={bg.src} className={styles.bg} alt="texto do rodape" />
     </div>
   );
 }

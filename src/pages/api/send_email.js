@@ -30,6 +30,7 @@ export default function handler(req, res) {
     );
     return res.status(200).send();
   } catch (error) {
-    return res.status(500).json({ message: error });
+    console.error({ error });
+    return;
   }
 }

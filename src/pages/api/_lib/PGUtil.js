@@ -3,9 +3,11 @@ import pg from "pg";
 let pgClient;
 
 export default function Conexao() {
-  console.log(pgClient);
   try {
-    if (pgClient) return pgClient;
+    if (pgClient) {
+      console.log("Socket reaproveitado!");
+      return pgClient;
+    }
 
     pgClient = new pg.Client({
       host: process.env.PG_HOST,
