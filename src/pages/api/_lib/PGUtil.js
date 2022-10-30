@@ -2,7 +2,7 @@ import pg from "pg";
 
 let pgClient;
 
-export default function Conexao() {
+export default async function Conexao() {
   try {
     if (pgClient) {
       console.log("Socket reaproveitado!");
@@ -17,11 +17,15 @@ export default function Conexao() {
       password: process.env.PG_PASSWORD,
     });
 
-    pgClient.connect((err) => !err && console.log("Conectado ao bd com sucesso!"));
-
-    return pgClient;
+    return new Promise(
+      async (resolve, reject) => {
+        await pgClient.connect((err) => !err && console.log("Conectado ao bd com sucesso!"));
+      },
+      (err, info) => {
+        err ? reject(err) : resolve(info);
+      }
+    );
   } catch (error) {
     console.error(error);
   }
-  return null;
 }

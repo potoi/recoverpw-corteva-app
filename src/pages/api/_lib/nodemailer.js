@@ -3,7 +3,7 @@ import emailContent from "./emailMaker";
 
 let transporter;
 
-export async function sendEmail({ destine, token }) {
+export function sendEmail({ destine, token }) {
   if (!transporter) {
     transporter = nodemailer.createTransport({
       host: process.env.SMTP_HOST,
@@ -24,8 +24,9 @@ export async function sendEmail({ destine, token }) {
       html: emailContent(link),
     },
     (err, info) => {
-      if (err) console.log(err);
-      else console.log(info);
+      err ? reject(err) : resolve(info);
     }
   );
+
+  return;
 }
