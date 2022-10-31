@@ -4,9 +4,8 @@ export const createTokens = (email) => {
   const token = JWT.sign(
     { email },
     process.env.JWT_SECRET,
-    { expiresIn: 60 * 20 * 60 * 60 } // 20 minutes
+    { expiresIn: 60 * 5 } // 5 minutes
   );
-  console.log(token);
   return token;
 };
 

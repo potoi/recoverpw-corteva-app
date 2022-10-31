@@ -41,10 +41,6 @@ export default async function handler(req, res) {
   //   html: "<a>Teste</a>",
   // });
 
-  console.log(JSON.parse(process.env.SEND_GRID_API).key);
-  console.log(process.env.EMAIL_USER);
-  console.log(token);
-  console.log(email);
 
   const algo = await sgMail.send({
     to: email,
@@ -55,8 +51,6 @@ export default async function handler(req, res) {
     // html: "<b>CARALHOOOOOO QUERO MORRER!</b>",
   });
 
-  console.log("enviei o email");
-  console.log(algo);
 
   return res.status(200).send();
 }
