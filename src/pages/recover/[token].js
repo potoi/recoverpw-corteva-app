@@ -1,4 +1,4 @@
-import { validateToken } from "../api/_lib/JWT";
+import { validateToken } from "../../_lib/JWT";
 import styles from "./styles.module.css";
 import PwInput from "../../components/PwInput";
 import ButtonForm from "../../components/ButtonForm";
@@ -25,7 +25,7 @@ export default function Recover({ jwt }) {
         return;
       }
 
-      axios.post(`change_pw`, { token: jwt?.token, pw: firstpw }).then(({ status }) => {
+      axios.post(`/api/change_pw`, { token: jwt?.token, pw: firstpw }).then(({ status }) => {
         if (status !== 200) {
           alert("Erro ao mudar senha, tente novamente mais tarde.");
           return;

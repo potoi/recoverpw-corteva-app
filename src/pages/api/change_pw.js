@@ -1,42 +1,58 @@
-import pgDB from "./_lib/PGUtil";
-import { validateToken } from "./_lib/JWT";
+import { Client } from "pg";
+import sgMail from "@sendgrid/mail";
+import { validateToken } from "../../_lib/JWT";
 import crypto from "crypto";
 
 export default async function handler(req, res) {
+  console.log("enttrei aqui");
   if (req.method !== "POST") {
-    return res.status(500).json({ message: "Method not allowed!" }).send();
+    return res.status(500).send();
   }
-
-  const db = await pgDB();
 
   try {
-    const { token } = req.body;
+    const { token, pw } = req.body;
 
-    if (!token) {
-      return res.status(400).json({ message: "Bad Request!" }).send();
+    console.log(token, pw);
+    
+    console.log('1');
+    if (!token || !pw) {
+      return res.status(500).send();
     }
-
+    
+    console.log('2');
     const vldToken = validateToken(token);
-
     if (!vldToken) {
-      return res.status(500).json({ message: "Bad Token!" }).send();
+      return res.status(500).send();
     }
-
+    
+    console.log('3');
     const newPW = crypto.createHmac("sha1", process.env.PG_SECRET);
-    newPW.update(req.body.pw);
+    newPW.update(pw);
     const pwHashed = newPW.digest("hex");
+    console.log('4');
+    
+    const client = new Client({
+      host: process.env.PG_HOST,
+      port: process.env.PG_PORT,
+      database: process.env.PG_DATABASE,
+      user: process.env.PG_USER,
+      password: process.env.PG_PASSWORD,
+    });
 
-    await db.query(
-      `UPDATE login SET senha='${pwHashed}' WHERE colaboradoremail=LOWER('${vldToken.email}')`,
-      (err, result) => {
-        if (err) {
-          console.error({ error: err });
-        }
-      }
-    );
-    return res.status(200).send();
+    await client.connect();
+    const result = await client.query(
+      `UPDATE login SET senha='${pwHashed}' WHERE colaboradoremail=LOWER('${vldToken.email}')`
+      );
+      await client.end();
+      console.log('5');
+      
+    if (result?.rowCount <= 0) {
+      console.log(result?.rowCount);
+      return res.status(400).send();
+    }
   } catch (error) {
-    console.error({ error });
-    return;
+    console.log({ error });
+    return res.status(500).send();
   }
+  return res.status(200).send();
 }
