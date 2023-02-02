@@ -6,6 +6,8 @@ import bg from "../../../public/background.svg";
 import Head from "next/head";
 import { useState } from "react";
 import axios from "../../services/api";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function Recover({ jwt }) {
   const [isSuccess, setIsSuccess] = useState(false);
@@ -16,25 +18,34 @@ export default function Recover({ jwt }) {
     try {
       evt.preventDefault();
       if (firstpw.length < 6) {
-        alert("Senha muito curta!");
+        toast.error("Senha muito curta!");
         return;
       }
 
       if (firstpw !== secondpw) {
-        alert("Senhas não coincidem!");
+        toast.error("Senhas não coincidem!");
         return;
       }
 
-      axios.post(`/api/change_pw`, { token: jwt?.token, pw: firstpw }).then(({ status }) => {
-        if (status !== 200) {
-          alert("Erro ao mudar senha, tente novamente mais tarde.");
-          return;
-        }
-
-        setIsSuccess(true);
-      });
+      const url = process.env.API_URL;
+      axios
+        .post(
+          url,
+          {
+            email: jwt.jwtObject.email,
+            pw: firstpw,
+          },
+          { headers: { Authorization: jwt.token } }
+        )
+        .then(({ status }) => {
+          if (status !== 200) {
+            toast.error("Erro ao mudar senha, tente novamente mais tarde.");
+            return;
+          }
+          setIsSuccess(true);
+        });
     } catch (err) {
-      alert("ERROR: " + JSON.stringify(err));
+      toast.error("ERROR: " + JSON.stringify(err));
     }
   }
 
@@ -43,17 +54,28 @@ export default function Recover({ jwt }) {
       <Head>
         <link rel="shortcut icon" href={bg.src} type="img/png" />
       </Head>
+      <ToastContainer theme={"colored"} hideProgressBar={true} />
       <img
         src="https://soudealgodao.com.br/wp-content/uploads/2020/08/logo-apoiador-corteva.png"
         alt="corteva logo"
       />
-      {isSuccess && <h1 style={{ color: "green" }}>Senha trocada com sucesso!</h1>}
+      {isSuccess && (
+        <h1 style={{ color: "green" }}>Senha trocada com sucesso!</h1>
+      )}
       {jwt?.token && !isSuccess && (
         <>
           <h1>Redefinição de Senha</h1>
           <form onSubmit={handleSubmit}>
-            <PwInput text="Digite a senha" value={firstpw} setState={setFirstpw} />
-            <PwInput text="Repita a senha" value={secondpw} setState={setSecondpw} />
+            <PwInput
+              text="Digite a senha"
+              value={firstpw}
+              setState={setFirstpw}
+            />
+            <PwInput
+              text="Repita a senha"
+              value={secondpw}
+              setState={setSecondpw}
+            />
             <ButtonForm text={"REDEFINIR SENHA"} />
           </form>
         </>

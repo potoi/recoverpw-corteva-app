@@ -13,9 +13,9 @@ export const validateToken = (token) => {
   if (!token) return false;
 
   try {
-    const validToken = JWT.verify(token, process.env.JWT_SECRET);
-    if (validToken) {
-      return validToken;
+    const decodeToken = JWT.decode(token, process.env.JWT_SECRET);
+    if (decodeToken) {
+      return decodeToken;
     }
   } catch (err) {
     console.log({ err });
