@@ -27,10 +27,9 @@ export default function Recover({ jwt }) {
         return;
       }
 
-      const url = process.env.API_URL;
       axios
         .post(
-          url,
+          jwt.url,
           {
             email: jwt.jwtObject.email,
             pw: firstpw,
@@ -94,12 +93,13 @@ export const getServerSideProps = async ({ req, params }) => {
     const jwtObject = validateToken(token);
 
     if (!jwtObject) return { props: {} };
-
+    const url = process.env.API_URL;
     return {
       props: {
         jwt: {
           token,
           jwtObject,
+          url,
         },
       },
     };
